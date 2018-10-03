@@ -13,21 +13,48 @@ public class PlayerController : MonoBehaviour
 	public float gravity;
 	public float jumpforce;
 
+	//Mouselook Variables
+	private float yaw;
+	private float pitch;
+	private CursorLockMode cursor_state = CursorLockMode.Locked;
+	public float mouse_sensitivity;
+
 	//Initialization
 	void Start()
 	{
+		Cursor.lockState = cursor_state;
 		myRigidbody = GetComponent<Rigidbody>();
+		yaw = transform.eulerAngles.y;
+		pitch = transform.eulerAngles.x;
 	}
 
 	//Fixed Update
 	void FixedUpdate() 
 	{
 		Movement();	
+		Mouselook();
 	}
 
 	//Movement
 	void Movement()
 	{
-		//myRigidbody.MovePosition(transform.right * 
+		myRigidbody.MovePosition (transform.position + transform.right * Input.GetAxis ("Horizontal") 
+			* moveSpeed * Time.deltaTime + transform.forward * Input.GetAxis ("Vertical") * moveSpeed * Time.fixedDeltaTime);
+
+		if (Input.GetKeyDown(KeyCode.Space))
+		{
+			myRigidbody.AddForce(Vector3.up * jumpforce);
+		}
+	}
+
+	//Mouse-Look
+	void Mouselook()
+	{
+		yaw += Input.GetAxis("Mouse X") * mouse_sensitivity;
+		pitch -= Input.GetAxis("Mouse Y") * mouse_sensitivity;
+		pitch = Mathf.Clamp (pitch, -89.99f, 89.99f);
+
+		myRigidbody.MoveRotation(Quaternion.Euler(new Vector3(myRigidbody.transform.eulerAngles.x, yaw, myRigidbody.transform.eulerAngles.z)));
+		playerCamera.transform.eulerAngles = new Vector3(pitch, playerCamera.transform.eulerAngles.y, playerCamera.transform.eulerAngles.z);
 	}
 }
