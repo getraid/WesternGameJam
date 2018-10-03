@@ -9,6 +9,7 @@ public class Scissors : MonoBehaviour
 	private float elapsedFrames = 0;
 	public float range;
 	public float wobbleSpeed;
+	public GameManagerScript gameManager;
 
 	// Use this for initialization
 	void Start () 
@@ -22,5 +23,11 @@ public class Scissors : MonoBehaviour
 		elapsedFrames += 0.1f;
 		transform.position = new Vector3 (startPosition.x, startPosition.y + Mathf.Sin (elapsedFrames * wobbleSpeed) * range, startPosition.z);
 		transform.Rotate (new Vector3 (0, 1, 0));
+	}
+
+	//Win Game
+	void OnTriggerEnter()
+	{
+		gameManager.Win ();
 	}
 }
