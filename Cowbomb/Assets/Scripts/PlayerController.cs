@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour
 	//Fixed Update
 	void FixedUpdate() 
 	{
-		Movement();	
+		//Movement();	
 
 		if (CheckGrounded())
 			myRigidbody.velocity = Vector3.zero;
@@ -40,6 +40,7 @@ public class PlayerController : MonoBehaviour
 	//Update
 	void Update()
 	{
+		Movement();
 		Mouselook();
 		Jumping();
 	}
@@ -48,7 +49,7 @@ public class PlayerController : MonoBehaviour
 	void Movement()
 	{
 		myRigidbody.MovePosition (transform.position + transform.right * Input.GetAxis ("Horizontal") 
-			* moveSpeed * Time.deltaTime + transform.forward * Input.GetAxis ("Vertical") * moveSpeed * Time.fixedDeltaTime);
+			* moveSpeed * Time.deltaTime + transform.forward * Input.GetAxis ("Vertical") * moveSpeed * Time.deltaTime);
 	}
 
 	//Jumping
