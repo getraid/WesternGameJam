@@ -32,7 +32,16 @@ public class PlayerController : MonoBehaviour
 	void FixedUpdate() 
 	{
 		Movement();	
+
+		if (CheckGrounded())
+			myRigidbody.velocity = Vector3.zero;
+	}
+
+	//Update
+	void Update()
+	{
 		Mouselook();
+		Jumping();
 	}
 
 	//Movement
@@ -40,8 +49,12 @@ public class PlayerController : MonoBehaviour
 	{
 		myRigidbody.MovePosition (transform.position + transform.right * Input.GetAxis ("Horizontal") 
 			* moveSpeed * Time.deltaTime + transform.forward * Input.GetAxis ("Vertical") * moveSpeed * Time.fixedDeltaTime);
+	}
 
-		if (Input.GetKeyDown(KeyCode.Space))
+	//Jumping
+	void Jumping()
+	{
+		if (Input.GetKeyDown(KeyCode.Space) && CheckGrounded())
 		{
 			myRigidbody.AddForce(Vector3.up * jumpforce);
 		}
@@ -56,5 +69,12 @@ public class PlayerController : MonoBehaviour
 
 		myRigidbody.MoveRotation(Quaternion.Euler(new Vector3(myRigidbody.transform.eulerAngles.x, yaw, myRigidbody.transform.eulerAngles.z)));
 		playerCamera.transform.eulerAngles = new Vector3(pitch, playerCamera.transform.eulerAngles.y, playerCamera.transform.eulerAngles.z);
+	}
+
+	//Check if grounded
+	bool CheckGrounded()
+	{
+		Vector3 startPoint = transform.position;
+		return Physics.Raycast (startPoint, Vector3.down, 1);
 	}
 }
