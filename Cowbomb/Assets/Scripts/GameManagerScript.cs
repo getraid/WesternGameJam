@@ -8,8 +8,9 @@ public class GameManagerScript : MonoBehaviour {
 	public bool gameWon = false;
 	public GameObject winningScreen;
 
-	//Win Game
-	public void Win()
+    //Win Game
+    //Needs to disable Player Movement
+    public void Win()
 	{
 		if (!gameWon)
 		{
