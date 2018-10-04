@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
 	public float moveSpeed;
 	public float gravity;
 	public float jumpforce;
-    public float raycastMaxDistance;
+    private float raycastMaxDistance = 1;
     public bool isMoving;
 
 	//Mouselook Variables
@@ -21,11 +21,13 @@ public class PlayerController : MonoBehaviour
 	private CursorLockMode cursor_state = CursorLockMode.Locked;
 	public float mouse_sensitivity;
 
+    private Animator myAnimator;
 
     //Initialization
     void Start()
 	{
 	    myRigidbody = GetComponent<Rigidbody>();
+	    myAnimator = GetComponent<Animator>();
         Cursor.lockState = cursor_state;
 		yaw = transform.eulerAngles.y;
 		pitch = transform.eulerAngles.x;
@@ -50,9 +52,11 @@ public class PlayerController : MonoBehaviour
 	//Movement
 	void Movement()
 	{
+	   
 	    isMoving = Mathf.Abs(Input.GetAxis("Horizontal")) > 0 || Mathf.Abs(Input.GetAxis("Vertical")) > 0;
+	    myAnimator.SetBool("IsMoving", isMoving);
 
-	    myRigidbody.MovePosition (transform.position + transform.right * Input.GetAxis ("Horizontal") 
+        myRigidbody.MovePosition (transform.position + transform.right * Input.GetAxis ("Horizontal") 
 			* moveSpeed * Time.deltaTime + transform.forward * Input.GetAxis ("Vertical") * moveSpeed * Time.deltaTime);
 	}
 
