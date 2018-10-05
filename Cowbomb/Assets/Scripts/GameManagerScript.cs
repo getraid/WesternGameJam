@@ -27,7 +27,7 @@ public class GameManagerScript : MonoBehaviour {
     private void DisableMovement()
     {
       Player.velocity = Vector3.zero;
-      Player.gameObject.SetActive(false);
+   //   Player.gameObject.SetActive(false);
     }
 
     //Loose Game
