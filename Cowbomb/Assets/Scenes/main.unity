@@ -704,10 +704,9 @@ GameObject:
   - component: {fileID: 180051551}
   - component: {fileID: 180051550}
   - component: {fileID: 180051549}
-  - component: {fileID: 180051552}
   - component: {fileID: 180051553}
   - component: {fileID: 180051554}
-  - component: {fileID: 180051555}
+  - component: {fileID: 180051552}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -804,21 +803,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &180051555
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 180051548}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a5783a93ee3bc64eab65bc129cd3c67, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GameManagerScript: {fileID: 1141263712}
-  TextMeshPro: {fileID: 1698362857}
-  timeMinutes: 1
-  timeSeconds: 5
 --- !u!1001 &187625779
 Prefab:
   m_ObjectHideFlags: 0
@@ -10592,6 +10576,7 @@ GameObject:
   - component: {fileID: 1141263711}
   - component: {fileID: 1141263712}
   - component: {fileID: 1141263713}
+  - component: {fileID: 1141263714}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -10645,6 +10630,21 @@ MonoBehaviour:
   WhenToResetUp: 300
   WhenToResetDown: -300
   startingHeight: 10
+--- !u!114 &1141263714
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1141263710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a5783a93ee3bc64eab65bc129cd3c67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GameManagerScript: {fileID: 1141263712}
+  TextMeshPro: {fileID: 1698362857}
+  timeMinutes: 1
+  timeSeconds: 5
 --- !u!1 &1145806420
 GameObject:
   m_ObjectHideFlags: 0

@@ -119,7 +119,7 @@ public class PlayerController : MonoBehaviour
     //Check if grounded by checking if capsule is in
     private bool CheckGroundedCapsulecast()
     {
-        Debug.DrawRay(transform.position, Vector3.down, Color.red, 0.1f);
+        Debug.DrawRay(transform.position, Vector3.down, Color.red, 2f);
         return Physics.CapsuleCast(transform.position, transform.position, myCapsuleCollider.radius, Vector3.down, raycastMaxDistance);
     }
 
