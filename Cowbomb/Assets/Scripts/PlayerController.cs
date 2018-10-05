@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,13 +7,14 @@ public class PlayerController : MonoBehaviour
 {
     //Component References
     public Camera playerCamera;
-    Rigidbody myRigidbody;
+    private Rigidbody myRigidbody;
+    private CapsuleCollider myCapsuleCollider;
 
     //Movement Variables
     public float moveSpeed;
     public float gravity;
     public float jumpforce;
-    private float raycastMaxDistance = 1;
+    public float raycastMaxDistance = 0.21f;
     public bool isMoving;
     public float speedMultiplier;
 
@@ -31,16 +33,18 @@ public class PlayerController : MonoBehaviour
     {
         myRigidbody = GetComponent<Rigidbody>();
         myAnimator = GetComponent<Animator>();
+        myCapsuleCollider = GetComponent<CapsuleCollider>();
+
         Cursor.lockState = cursor_state;
         yaw = transform.eulerAngles.y;
         pitch = transform.eulerAngles.x;
     }
 
-   
+
     // Fixed Update method
     void FixedUpdate()
     {
-        bool grounded = CheckGrounded();
+        bool grounded = CheckGroundedCapsulecast();
         if (grounded)
             myRigidbody.velocity = Vector3.zero;
         myAnimator.SetBool("IsJumping", !grounded);
@@ -55,7 +59,7 @@ public class PlayerController : MonoBehaviour
         Mouselook();
         Jumping();
     }
-		
+
 
     // MovementMethod
     private void Movement()
@@ -67,7 +71,7 @@ public class PlayerController : MonoBehaviour
         moveSpeed = temp;
     }
 
- 
+
     // Used for moving animation
     private void CheckIfMoving()
     {
@@ -94,7 +98,7 @@ public class PlayerController : MonoBehaviour
     // Jump method
     private void Jumping()
     {
-        if (Input.GetButtonDown("Jump") && CheckGrounded())
+        if (Input.GetButtonDown("Jump") && CheckGroundedCapsulecast())
         {
             myRigidbody.AddForce(Vector3.up * jumpforce);
         }
@@ -111,11 +115,19 @@ public class PlayerController : MonoBehaviour
         myRigidbody.transform.eulerAngles = new Vector3(myRigidbody.transform.eulerAngles.x, yaw, myRigidbody.transform.eulerAngles.z);
         playerCamera.transform.eulerAngles = new Vector3(pitch, yaw, playerCamera.transform.eulerAngles.z);
     }
-		
-    //Check if grounded
-    private bool CheckGrounded()
+
+    //Check if grounded by checking if capsule is in
+    private bool CheckGroundedCapsulecast()
     {
-        Vector3 startPoint = transform.position;
-        return Physics.Raycast(startPoint, Vector3.down, raycastMaxDistance);
+        Debug.DrawRay(transform.position, Vector3.down, Color.red, 0.1f);
+        return Physics.CapsuleCast(transform.position, transform.position, myCapsuleCollider.radius, Vector3.down, raycastMaxDistance);
     }
+
+    [Obsolete]
+    private bool CheckGroundedRaycast()
+    {
+        return Physics.Raycast(transform.position, Vector3.down, raycastMaxDistance);
+    }
+
 }
+
