@@ -2,80 +2,120 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour 
+public class PlayerController : MonoBehaviour
 {
-	//Component References
-	public Camera playerCamera;
-	Rigidbody myRigidbody;
+    //Component References
+    public Camera playerCamera;
+    Rigidbody myRigidbody;
 
-	//Movement Variables
-	public float moveSpeed;
-	public float gravity;
-	public float jumpforce;
+    //Movement Variables
+    public float moveSpeed;
+    public float gravity;
+    public float jumpforce;
+    private float raycastMaxDistance = 1;
+    public bool isMoving;
+    public float speedMultiplier;
 
-	//Mouselook Variables
-	private float yaw;
-	private float pitch;
-	private CursorLockMode cursor_state = CursorLockMode.Locked;
-	public float mouse_sensitivity;
+    //Mouselook Variables
+    private float yaw;
+    private float pitch;
+    private CursorLockMode cursor_state = CursorLockMode.Locked;
+    public float mouse_sensitivity;
 
-	//Initialization
-	void Start()
-	{
-		Cursor.lockState = cursor_state;
-		myRigidbody = GetComponent<Rigidbody>();
-		yaw = transform.eulerAngles.y;
-		pitch = transform.eulerAngles.x;
-	}
+    //Animation Variables
+    private Animator myAnimator;
 
-	//Fixed Update
-	void FixedUpdate() 
-	{
-		//Movement();	
 
-		if (CheckGrounded())
-			myRigidbody.velocity = Vector3.zero;
-	}
+    // Initialization
+    void Start()
+    {
+        myRigidbody = GetComponent<Rigidbody>();
+        myAnimator = GetComponent<Animator>();
+        Cursor.lockState = cursor_state;
+        yaw = transform.eulerAngles.y;
+        pitch = transform.eulerAngles.x;
+    }
 
-	//Update
-	void Update()
-	{
-		Movement();
-		Mouselook();
-		Jumping();
-	}
+   
+    // Fixed Update method
+    void FixedUpdate()
+    {
+        bool grounded = CheckGrounded();
+        if (grounded)
+            myRigidbody.velocity = Vector3.zero;
+        myAnimator.SetBool("IsJumping", !grounded);
+    }
 
-	//Movement
-	void Movement()
-	{
-		myRigidbody.MovePosition (transform.position + transform.right * Input.GetAxis ("Horizontal") 
-			* moveSpeed * Time.deltaTime + transform.forward * Input.GetAxis ("Vertical") * moveSpeed * Time.deltaTime);
-	}
 
-	//Jumping
-	void Jumping()
-	{
-		if (Input.GetKeyDown(KeyCode.Space) && CheckGrounded())
-		{
-			myRigidbody.AddForce(Vector3.up * jumpforce);
-		}
-	}
+    // Update method
+    void Update()
+    {
+        Movement();
+        CheckIfMoving();
+        Mouselook();
+        Jumping();
+    }
+		
 
-	//Mouse-Look
-	void Mouselook()
-	{
-		yaw += Input.GetAxis("Mouse X") * mouse_sensitivity;
-		pitch -= Input.GetAxis("Mouse Y") * mouse_sensitivity;
-		pitch = Mathf.Clamp (pitch, -89.99f, 89.99f);
+    // MovementMethod
+    private void Movement()
+    {
+        float temp = moveSpeed;
+        CheckSprintButton();
+        myRigidbody.MovePosition(transform.position + transform.right * Input.GetAxis("Horizontal")
+            * moveSpeed * Time.deltaTime + transform.forward * Input.GetAxis("Vertical") * moveSpeed * Time.deltaTime);
+        moveSpeed = temp;
+    }
 
-		myRigidbody.MoveRotation(Quaternion.Euler(new Vector3(myRigidbody.transform.eulerAngles.x, yaw, myRigidbody.transform.eulerAngles.z)));
-		playerCamera.transform.eulerAngles = new Vector3(pitch, playerCamera.transform.eulerAngles.y, playerCamera.transform.eulerAngles.z);
-	}
+ 
+    // Used for moving animation
+    private void CheckIfMoving()
+    {
+        isMoving = Mathf.Abs(Input.GetAxis("Horizontal")) > 0 || Mathf.Abs(Input.GetAxis("Vertical")) > 0;
+        myAnimator.SetBool("IsMoving", isMoving);
+    }
 
-	//Check if grounded
-	bool CheckGrounded()
-	{
-		Vector3 startPoint = transform.position;
-		return Physics.Raycast (startPoint, Vector3.down, 1);
-	}
+
+    // Checks if sprint button "Sprint" is pressed, if so, applies a given speed multiplier.
+    private void CheckSprintButton()
+    {
+        if (Input.GetButton("Sprint"))
+        {
+            moveSpeed *= speedMultiplier;
+            myAnimator.SetFloat("SpeedUp", speedMultiplier);
+        }
+        else
+        {
+            myAnimator.SetFloat("SpeedUp", 1);
+        }
+    }
+
+
+    // Jump method
+    private void Jumping()
+    {
+        if (Input.GetButtonDown("Jump") && CheckGrounded())
+        {
+            myRigidbody.AddForce(Vector3.up * jumpforce);
+        }
+    }
+
+
+    // Mouselook method
+    private void Mouselook()
+    {
+        yaw += Input.GetAxis("Mouse X") * mouse_sensitivity;
+        pitch -= Input.GetAxis("Mouse Y") * mouse_sensitivity;
+        pitch = Mathf.Clamp(pitch, -89.99f, 49.99f);
+
+        myRigidbody.transform.eulerAngles = new Vector3(myRigidbody.transform.eulerAngles.x, yaw, myRigidbody.transform.eulerAngles.z);
+        playerCamera.transform.eulerAngles = new Vector3(pitch, yaw, playerCamera.transform.eulerAngles.z);
+    }
+		
+    //Check if grounded
+    private bool CheckGrounded()
+    {
+        Vector3 startPoint = transform.position;
+        return Physics.Raycast(startPoint, Vector3.down, raycastMaxDistance);
+    }
 }
