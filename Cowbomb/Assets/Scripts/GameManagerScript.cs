@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameManagerScript : MonoBehaviour {
 
 	//Variables
+    public Rigidbody Player;
 	public bool gameWon = false;
 	public bool gameLost = false;
 	public GameObject winningScreen;
@@ -18,16 +19,24 @@ public class GameManagerScript : MonoBehaviour {
 		{
 			gameWon = true;
 			winningScreen.SetActive (true);
+            DisableMovement();
 			Debug.Log ("Won");
 		}
 	}
 
-	//Loose Game
+    private void DisableMovement()
+    {
+      Player.velocity = Vector3.zero;
+      Player.gameObject.SetActive(false);
+    }
+
+    //Loose Game
     public void Loose()
     {
-        if (!gameLost)
+        if (!gameLost && !gameWon)
         {
             gameLost = true;
+            DisableMovement();
             loosingScreen.SetActive(true);
         }
 

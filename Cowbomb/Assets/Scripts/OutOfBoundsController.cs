@@ -6,11 +6,11 @@ using UnityEngine;
 public class OutOfBoundsController : MonoBehaviour
 {
     public Rigidbody Player;
-    public int WhenToResetDown = -300;
     public int WhenToResetUp = -300;
-    public List<Collider> Colliders;
+    public int WhenToResetDown = -300;
+    public float startingHeight = 5;
+
     private Vector3 startPosition;
-    public float startingHeight;
 
     // Use this for initialization
     void Start()

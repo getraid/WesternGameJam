@@ -25,9 +25,8 @@ public class PlayerController : MonoBehaviour
     //Animation Variables
     private Animator myAnimator;
 
-    /// <summary>
-    /// Initialization
-    /// </summary>
+
+    // Initialization
     void Start()
     {
         myRigidbody = GetComponent<Rigidbody>();
@@ -37,9 +36,8 @@ public class PlayerController : MonoBehaviour
         pitch = transform.eulerAngles.x;
     }
 
-    /// <summary>
-    /// Fixed Update method
-    /// </summary>
+   
+    // Fixed Update method
     void FixedUpdate()
     {
         bool grounded = CheckGrounded();
@@ -48,9 +46,8 @@ public class PlayerController : MonoBehaviour
         myAnimator.SetBool("IsJumping", !grounded);
     }
 
-    /// <summary>
-    /// Update method
-    /// </summary>
+
+    // Update method
     void Update()
     {
         Movement();
@@ -59,9 +56,8 @@ public class PlayerController : MonoBehaviour
         Jumping();
     }
 		
-    /// <summary>
-    /// MovementMethod
-    /// </summary>
+
+    // MovementMethod
     private void Movement()
     {
         float temp = moveSpeed;
@@ -71,18 +67,16 @@ public class PlayerController : MonoBehaviour
         moveSpeed = temp;
     }
 
-    /// <summary>
-    /// Used for moving animation
-    /// </summary>
+ 
+    // Used for moving animation
     private void CheckIfMoving()
     {
         isMoving = Mathf.Abs(Input.GetAxis("Horizontal")) > 0 || Mathf.Abs(Input.GetAxis("Vertical")) > 0;
         myAnimator.SetBool("IsMoving", isMoving);
     }
 
-    /// <summary>
-    /// Checks if sprint button "Sprint" is pressed, if so, applies a given speed multiplier.
-    /// </summary>
+
+    // Checks if sprint button "Sprint" is pressed, if so, applies a given speed multiplier.
     private void CheckSprintButton()
     {
         if (Input.GetButton("Sprint"))
@@ -96,9 +90,8 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Jump method
-    /// </summary>
+
+    // Jump method
     private void Jumping()
     {
         if (Input.GetButtonDown("Jump") && CheckGrounded())
@@ -107,9 +100,8 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Mouselook method
-    /// </summary>
+
+    // Mouselook method
     private void Mouselook()
     {
         yaw += Input.GetAxis("Mouse X") * mouse_sensitivity;
