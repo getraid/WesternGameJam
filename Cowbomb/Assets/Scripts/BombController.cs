@@ -8,6 +8,8 @@ public class BombController : MonoBehaviour
     private TextMeshPro TextMeshPro;
     private float h, s, v;
     public float[] timeToCompleteLevel = new float[2] {00,00};
+    public GameManagerScript GameManagerScript;
+
 
     // Use this for initialization
     void Start()
@@ -18,7 +20,7 @@ public class BombController : MonoBehaviour
         s = 1f;
         v = 1f;
         TextMeshPro.color = Color.HSVToRGB(h, s, v);
-        h *= 100;
+       
     }
 
     // Update is called once per frame
@@ -29,7 +31,7 @@ public class BombController : MonoBehaviour
         {
             if (timeToCompleteLevel[0] <= 0)
             {
-                //ende gelände
+                GameManagerScript.Loose();
                 timeToCompleteLevel[0] = 0;
                 timeToCompleteLevel[1] = 0;
             }
@@ -37,12 +39,20 @@ public class BombController : MonoBehaviour
             {
                 timeToCompleteLevel[1] = 60f;
                 timeToCompleteLevel[0] -= 1;
+            
             }
-            else
-            {
-                timeToCompleteLevel[0] -= 1;
-            }
+      
         }
+        if (timeToCompleteLevel[0] == 0)
+        {
+            h -= 0.0001f;
+            if (h > 0)
+                TextMeshPro.color = Color.HSVToRGB(h, s, v);
+            else
+                h = 0;
+
+        }
+
         TextMeshPro.text = string.Format("{0}:{1:F2}", timeToCompleteLevel[0], timeToCompleteLevel[1]);
 
 
