@@ -46,7 +46,6 @@ public class PlayerController : MonoBehaviour
         if (grounded)
             myRigidbody.velocity = Vector3.zero;
         myAnimator.SetBool("IsJumping", !grounded);
-
     }
 
     /// <summary>
@@ -59,9 +58,7 @@ public class PlayerController : MonoBehaviour
         Mouselook();
         Jumping();
     }
-
-
-
+		
     /// <summary>
     /// MovementMethod
     /// </summary>
@@ -122,9 +119,7 @@ public class PlayerController : MonoBehaviour
         myRigidbody.transform.eulerAngles = new Vector3(myRigidbody.transform.eulerAngles.x, yaw, myRigidbody.transform.eulerAngles.z);
         playerCamera.transform.eulerAngles = new Vector3(pitch, yaw, playerCamera.transform.eulerAngles.z);
     }
-
-
-
+		
     //Check if grounded
     private bool CheckGrounded()
     {

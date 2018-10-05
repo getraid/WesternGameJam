@@ -5,27 +5,28 @@ using UnityEngine;
 
 public class BombController : MonoBehaviour
 {
+	//Variables
     private TextMeshPro TextMeshPro;
-    private float h, s, v;
+	public GameManagerScript GameManagerScript;
     public float[] timeToCompleteLevel = new float[2] {00,00};
-    public GameManagerScript GameManagerScript;
-
+	private float hue, sat, val;
 
     // Use this for initialization
     void Start()
     {
         TextMeshPro = GetComponent<TextMeshPro>();
-        h = 0.30f; //grün
-       // h = 0f; //rot
-        s = 1f;
-        v = 1f;
-        TextMeshPro.color = Color.HSVToRGB(h, s, v);
+        hue = 0.30f; //green
+        //hue = 0f; //red
+        sat = 1f;
+        val = 1f;
+        TextMeshPro.color = Color.HSVToRGB(hue, sat, val);
        
     }
 
     // Update is called once per frame
     void Update()
     {
+		//Decrease timer
         timeToCompleteLevel[1] -= Time.deltaTime;
         if (timeToCompleteLevel[1] <= 0)
         {
@@ -39,24 +40,21 @@ public class BombController : MonoBehaviour
             {
                 timeToCompleteLevel[1] = 60f;
                 timeToCompleteLevel[0] -= 1;
-            
             }
-      
         }
-        if (timeToCompleteLevel[0] == 0)
+        
+		//Change the color of the timer
+		if (timeToCompleteLevel[0] == 0)
         {
-            h -= 0.0001f;
-            if (h > 0)
-                TextMeshPro.color = Color.HSVToRGB(h, s, v);
+            hue -= 0.0001f;
+            if (hue > 0)
+                TextMeshPro.color = Color.HSVToRGB(hue, sat, val);
             else
-                h = 0;
-
+                hue = 0;
         }
 
+		//Set the text for the timer
         TextMeshPro.text = string.Format("{0}:{1:F2}", timeToCompleteLevel[0], timeToCompleteLevel[1]);
-
-
-
     }
 
 }

@@ -11,7 +11,7 @@ public class GameManagerScript : MonoBehaviour {
 	public GameObject loosingScreen;
 
     //Win Game
-    //Needs to disable Player Movement
+    //TODO: Needs to disable Player Movement
     public void Win()
 	{
 		if (!gameWon)
@@ -22,13 +22,13 @@ public class GameManagerScript : MonoBehaviour {
 		}
 	}
 
+	//Loose Game
     public void Loose()
     {
         if (!gameLost)
         {
-            gameWon = true;
+            gameLost = true;
             loosingScreen.SetActive(true);
-        
         }
 
     }
